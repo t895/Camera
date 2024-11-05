@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_view"
-    android:background="@color/system_neutral1_900"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/gallery_slider"
-        android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
 
     <include
-        layout="@layout/gallery_placeholder"
         android:id="@+id/placeholder_text"
         layout="@layout/gallery_placeholder" />
 

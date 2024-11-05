@@ -1521,7 +1521,7 @@ open class MainActivity : AppCompatActivity(),
                 gLeftDash.setBackgroundResource(R.drawable.white_shadow_rect)
                 gRightDash.setBackgroundResource(R.drawable.white_shadow_rect)
 
-                gAngleTextView.setTextColor(ContextCompat.getColor(this, R.color.white))
+                gAngleTextView.setTextColor(ContextCompat.getColor(this, android.R.color.white))
             }
 
             val zOffset = (lzAngle / 60) * dp32

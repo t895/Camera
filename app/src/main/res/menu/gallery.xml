@@ -7,25 +7,25 @@
 
     <item
         android:id="@+id/edit_icon"
-        android:icon="@drawable/edit"
+        android:icon="@drawable/edit_white"
         android:title="@string/edit"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/delete_icon"
-        android:icon="@drawable/delete"
+        android:icon="@drawable/delete_white"
         android:title="@string/delete_file"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/info"
-        android:icon="@drawable/info"
+        android:icon="@drawable/info_white"
         android:title="@string/file_info"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/share_icon"
-        android:icon="@drawable/share"
+        android:icon="@drawable/share_white"
         android:title="@string/share_media"
         app:showAsAction="always" />
 

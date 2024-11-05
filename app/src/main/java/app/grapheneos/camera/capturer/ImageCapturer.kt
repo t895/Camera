@@ -174,7 +174,7 @@ class ImageCapturer(val mActivity: MainActivity) {
                 NotificationManager.IMPORTANCE_HIGH)
 
             val notif = Notification.Builder(mActivity, channelId).apply {
-                setSmallIcon(R.drawable.info)
+                setSmallIcon(R.drawable.info_white)
                 setContentTitle(mActivity.getString(R.string.unable_to_save_image))
             }.build()
 

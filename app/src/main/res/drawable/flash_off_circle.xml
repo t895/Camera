@@ -2,15 +2,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:gravity="center">
         <shape android:shape="oval">
-            <solid android:color="@color/unselected_option_bg"/>
+            <solid android:color="?attr/colorSurfaceContainer" />
             <padding
+                android:bottom="@dimen/toggle_button_padding"
                 android:left="@dimen/toggle_button_padding"
                 android:right="@dimen/toggle_button_padding"
-                android:top="@dimen/toggle_button_padding"
-                android:bottom="@dimen/toggle_button_padding"/>
+                android:top="@dimen/toggle_button_padding" />
         </shape>
     </item>
     <item
-        android:gravity="center"
-        android:drawable="@drawable/flash_off"/>
+        android:drawable="@drawable/flash_off"
+        android:gravity="center" />
 </layer-list>

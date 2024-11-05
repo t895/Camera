@@ -4,32 +4,22 @@
         <layer-list>
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="@color/unselected_option_bg"/>
-                    <padding
-                        android:left="@dimen/toggle_button_padding"
-                        android:right="@dimen/toggle_button_padding"
-                        android:top="@dimen/toggle_button_padding"
-                        android:bottom="@dimen/toggle_button_padding"/>
+                    <solid android:color="?attr/colorSurfaceContainer" />
+                    <padding android:bottom="@dimen/toggle_button_padding" android:left="@dimen/toggle_button_padding" android:right="@dimen/toggle_button_padding" android:top="@dimen/toggle_button_padding" />
                 </shape>
             </item>
-            <item
-                android:drawable="@drawable/location_off"/>
+            <item android:drawable="@drawable/location_off" />
         </layer-list>
     </item>
     <item android:state_checked="true">
         <layer-list>
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="@color/selected_option_bg"/>
-                    <padding
-                        android:left="@dimen/toggle_button_padding"
-                        android:right="@dimen/toggle_button_padding"
-                        android:top="@dimen/toggle_button_padding"
-                        android:bottom="@dimen/toggle_button_padding"/>
+                    <solid android:color="?attr/colorPrimary" />
+                    <padding android:bottom="@dimen/toggle_button_padding" android:left="@dimen/toggle_button_padding" android:right="@dimen/toggle_button_padding" android:top="@dimen/toggle_button_padding" />
                 </shape>
             </item>
-            <item
-                android:drawable="@drawable/location_on"/>
+            <item android:drawable="@drawable/location_on" />
         </layer-list>
     </item>
 </selector>
