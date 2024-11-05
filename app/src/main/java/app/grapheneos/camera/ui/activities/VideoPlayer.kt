@@ -1,16 +1,18 @@
 package app.grapheneos.camera.ui.activities
 
-import android.graphics.drawable.ColorDrawable
+import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.MediaController
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
-import app.grapheneos.camera.R
 import app.grapheneos.camera.databinding.VideoPlayerBinding
 import app.grapheneos.camera.util.getParcelableExtra
 import kotlin.concurrent.thread
@@ -26,8 +28,21 @@ class VideoPlayer : AppCompatActivity() {
 
     private lateinit var binding: VideoPlayerBinding
 
+    @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.isAppearanceLightStatusBars = false
+        windowInsetsController.isAppearanceLightNavigationBars = false
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+
+        // This is a deprecated constant but Google uses it themselves in Photos and results in
+        // much nicer UX. Suppress the warning until we get a decent API.
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+
         val intent = this.intent
         if (intent.getBooleanExtra(IN_SECURE_MODE, false)) {
             setShowWhenLocked(true)
@@ -37,7 +52,6 @@ class VideoPlayer : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.let {
-            it.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.appbar)))
             it.setDisplayShowTitleEnabled(false)
             it.setDisplayHomeAsUpEnabled(true)
         }
@@ -50,13 +64,17 @@ class VideoPlayer : AppCompatActivity() {
             override fun show() {
                 super.show()
                 supportActionBar?.show()
+                windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
             }
 
             override fun hide() {
                 super.hide()
                 supportActionBar?.hide()
+                windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
             }
         }
+
+        supportActionBar?.setBackgroundDrawable(null)
 
         thread {
             var hasAudio = true

@@ -46,6 +46,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
 import androidx.annotation.StringRes
@@ -61,7 +62,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updateLayoutParams
@@ -592,6 +592,7 @@ open class MainActivity : AppCompatActivity(),
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_LONG)
 
@@ -894,52 +895,31 @@ open class MainActivity : AppCompatActivity(),
 
         qrScanToggles = binding.qrScanToggles
 
-        var isInsetSet = false
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, insets ->
+            val systemBars = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+            val displayCutout = insets.getInsets(WindowInsetsCompat.Type.displayCutout())
 
-        ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, windowInsets ->
-            val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-
-            view.layoutParams = (view.layoutParams as ViewGroup.MarginLayoutParams).let {
+            tabLayout.layoutParams = (tabLayout.layoutParams as ViewGroup.MarginLayoutParams).let {
                 it.setMargins(
-                    insets.left,
-                    0,
-                    insets.right,
-                    insets.bottom,
+                    it.leftMargin,
+                    it.topMargin,
+                    it.rightMargin,
+                    (80 * resources.displayMetrics.density.toInt()) + systemBars.bottom,
                 )
-
                 it
             }
+            qrScanToggles.layoutParams =
+                (qrScanToggles.layoutParams as ViewGroup.MarginLayoutParams).let {
+                    it.setMargins(
+                        it.leftMargin,
+                        (16 * resources.displayMetrics.density.toInt()) + displayCutout.top,
+                        it.rightMargin,
+                        it.bottomMargin,
+                    )
+                    it
+                }
 
-            if (insets.top != 0 && !isInsetSet) {
-                mainFrame.layoutParams =
-                    (mainFrame.layoutParams as ViewGroup.MarginLayoutParams).let {
-                        it.setMargins(
-                            it.leftMargin,
-                            (8 * resources.displayMetrics.density.toInt()) + insets.top,
-                            it.rightMargin,
-                            it.bottomMargin,
-                        )
-
-                        it
-                    }
-
-                qrScanToggles.layoutParams =
-                    (qrScanToggles.layoutParams as ViewGroup.MarginLayoutParams).let {
-                        it.setMargins(
-                            it.leftMargin,
-                            (16 * resources.displayMetrics.density.toInt()) +
-                                    insets.top,
-                            it.rightMargin,
-                            it.bottomMargin,
-                        )
-
-                        it
-                    }
-
-                isInsetSet = true
-            }
-
-            WindowInsetsCompat.CONSUMED
+            insets
         }
 
         setContentView(binding.getRoot())
@@ -949,8 +929,6 @@ open class MainActivity : AppCompatActivity(),
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         cdTimer = binding.cTimer
         cdTimer.setMainActivity(this)
@@ -967,16 +945,6 @@ open class MainActivity : AppCompatActivity(),
         focusRing = binding.focusRing
 
         micOffIcon = binding.micOff
-
-        previewView.viewTreeObserver.addOnPreDrawListener(
-            object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    previewView.viewTreeObserver.removeOnPreDrawListener(this)
-                    repositionTabLayout()
-                    return true
-                }
-            }
-        )
 
         moreOptionsToggle = binding.moreOptions
         moreOptionsToggle.setOnClickListener {
@@ -1011,49 +979,6 @@ open class MainActivity : AppCompatActivity(),
         gRightDash = binding.gCircleRightDash
 
         gCircleFrame = binding.gCircleFrame
-    }
-
-    private fun repositionTabLayout() {
-
-        threeButtons.visibility = View.VISIBLE
-
-        tabLayout.viewTreeObserver.addOnPreDrawListener(
-            object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-
-                    tabLayout.viewTreeObserver
-                        .removeOnPreDrawListener(
-                            this
-                        )
-
-                    val previewHeight169 = previewContainer.width * 16 / 9
-
-                    val extraHeight169 = previewContainer.height -
-                            previewHeight169 -
-                            tabLayout.height -
-                            10 * resources.displayMetrics.density.toInt()
-
-                    tabLayout.layoutParams =
-                        (tabLayout.layoutParams as ViewGroup.MarginLayoutParams).let {
-
-                            it.setMargins(
-                                it.leftMargin,
-                                it.topMargin,
-                                it.rightMargin,
-                                if (extraHeight169 > 0) {
-                                    extraHeight169
-                                } else {
-                                    it.bottomMargin
-                                }
-                            )
-
-                            it
-                        }
-
-                    return true
-                }
-
-            })
     }
 
     fun finalizeMode(tab: TabLayout.Tab? = null) {
