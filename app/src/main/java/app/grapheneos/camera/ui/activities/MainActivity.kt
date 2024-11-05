@@ -1062,7 +1062,7 @@ open class MainActivity : AppCompatActivity(),
         )
 
         runOnUiThread {
-            dialog = Dialog(this, R.style.Theme_Dialog)
+            dialog = Dialog(this, R.style.Theme_App_FullscreenDialog)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             val dialogBinding = ScanResultDialogBinding.inflate(layoutInflater)
             dialog.setContentView(dialogBinding.root)
